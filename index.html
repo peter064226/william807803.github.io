@@ -1,14 +1,81 @@
 <iframe allowtransparency="true" frameborder="0" scrolling="0" src="header.html" width="100%" height=""></iframe>
 <link rel="stylesheet" href="common.css">
 <!--#include file="good.html" -->
-<main style="background: url(bg.jpg);">
-  <section style="display: flex;
-    font-size: 14px;margin: auto;width:1000px;padding:50px;
-    flex-direction: column;">
-    <a href="2018-09-11-安装ubuntu18并用windows7远程桌面控制.html">2018-09-11-安装ubuntu18并用windows7远程桌面控制</a>
-    <a href="2018-09-18-F7的List组件图文示例.html">2018-09-18-F7的List组件图文示例</a>
-    <a href="2018-10-02-Promise研究.html">2018-10-02-Promise研究</a>
-    <a href="2018-11-07-mac安装.html">2018-11-07-mac安装</a>
-  </section>
+<main id="root" style="width:1200px;margin:auto;">
+  <section class="card" v-for="(ele,idx) in list" style="width: 680px;margin:20px 0px;">
+    <div class="title">
+      <a :href="ele.title+'.html'" class="big" style="color: #0086E3;text-decoration:none;">{{ele.title.substr(11,100)}}</a>
+      <div class="sub" style="line-height:26px;color: #879DAF;font-size:12px;">{{ele.title.substr(0,10)}}</div>
+    </div>
+    <div class="img" style="width: 680px;height: 130px;position:relative;border-radius:0px;overflow:hidden;">
+      <div :id="'cardbg'+idx" style="position:absolute;"></div>
+      <div class="mesh" style="width:100%;height:100%;opacity:0.4;position:absolute;background: url(overlay.png) repeat right bottom;"></div>
+
+      <div class="front" style="width: 680px;height: 130px;position:absolute;display:flex;justify-content: center;align-items: center;">
+        <div style="font-size:25px;color:white;">{{ele.title}}</div>
+      </div>
+    </div>
+    <div class="desc" style="margin: 22px 0;    line-height: 26px;
+    color: #888;
+    font-size: 14px;
+    height: 70px;
+    overflow: hidden;
+    display: inline-block;">
+      {{ele.desc}}
+    </div>
+    <div class="more">
+
+    </div>
+   </section>
 </main>
 <iframe allowtransparency="true" frameborder="0" scrolling="0" src="footer.html" width="100%" height=""></iframe>
+<script src="vue.js"></script>
+<script src="trianglify.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script> -->
+
+<script type="text/javascript">
+  new Vue({
+    el: '#root',
+    data: {
+      list:[
+        {
+          title:'2018-09-11-安装ubuntu18并用windows7远程桌面控制',
+          desc:'刚好有一个空闲电脑，想在上面装上ubuntu系统，为以后工作方便，可以从windows远程桌面控制，切换到ubuntu开发',
+        },
+        {
+          title:'2018-09-18-F7的List组件图文示例',
+          desc:'list组件在移动端是非常常用的组件，官方文档里的相当slot比较多，在使用的过程中常发现不知道使用哪些slot和自己的PSD比较匹配，现列出展示代码和效果图，以备不时之需：',
+        },
+        {
+          title:'2018-10-02-Promise研究',
+          desc:'最近遇到一个xhr promise返回后执行相关操作的问题，因为对promise细节不太明了，所以作一些研究记录：',
+        },
+        {
+          title:'2018-11-07-mac安装',
+          desc:'有台闲置pc电脑，想着装个mac:计算机=>管理=>磁盘 右键压缩卷，新建一个分区10G，用于在硬盘上装安装盘（就不用U盘安装了），新建另一个分区，大概100或200G吧，用作系统盘。',
+        },
+      ],
+    },
+    computed: {
+
+    },
+    methods: {
+      getBG(idx){
+        var pattern = Trianglify({
+          width: 680,
+          height: 130,
+          cell_size:50,
+        });
+        document.getElementById('cardbg'+idx).appendChild(pattern.canvas())
+      }
+    },
+    mounted(){
+      this.list.forEach((ele,idx)=>{
+        this.getBG(idx)
+      })
+    }
+  })
+</script>
+<script>
+
+</script>
