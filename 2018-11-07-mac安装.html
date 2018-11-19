@@ -1,0 +1,248 @@
+<iframe allowtransparency="true" frameborder="0" scrolling="0" src="header.html" width="100%" height="150px"></iframe>
+<link rel="stylesheet" href="common.css">
+<main>
+
+  # 2018-11-07-mac安装
+
+  ## 有台闲置pc电脑，想着装个mac
+
+  1. 计算机=>管理=>磁盘 右键压缩卷，新建一个分区10G，用于在硬盘上装安装盘（就不用U盘安装了），新建另一个分区，大概100或200G吧，用作系统盘。
+  2. 用leopad硬盘助手把下载好的cdr文件写入到分好的10G安装盘上；
+  3. 用DiskGenius把10G和100G盘标识改成AF，开始的时候我忽略的这一步，结果用变色龙启动之后，找不到安装盘的盘符；
+  4. 用变色龙软件直接安装启动工具到PC，或者用easybcd添加iso选项，把wowpc.iso添加到启动条目上；
+  5. 重新启动，选择变色龙启动条目，选择10G安装盘，开始安装。终于看到了安装界面，以前试了其他机器，老是各种问题报错，估计是显卡的问题，
+  6. 安装完后再启动时发现卡在了刚开始的白苹果界面，这里需要安装HPS 读取10G安装盘和100G系统盘的内容，把安装盘的extra文件夹复制到系统盘的根目标，extra里面kext是各种驱动，然后重启，就可以进入mac设置界面了，这之间会有一段时间比较长的只有鼠标黑屏界面。
+  7. 设置的时候提示设置网络，发现设置之后连不了网络，于是跳过，进入系统后再设置网络，发现网络是serial port，貌似是拨号的什么东西，查了一下发现是网卡驱动没有，于是在网上下载了[RealtekRTL8111 for Mac|RealtekRTL8111.kext下载 V2.2.2](http://www.pc6.com/mac/556482.html)，放到extra文件夹重启之后就可以配置网络了
+  8. 进入系统后发现显卡没有，查了一下是显卡恭驱动没有，在网上找了一下https://support.apple.com/kb/DL1953?locale=en_US，下载之后发现安装不了，提示要求系统版本是10.13.3 , 查看自己的系统发现是10.13 , 于是找了10.13的版本https://www.nvidia.com/Download/driverResults.aspx/126157/en-us下载完成之后，又提示不能安装，系统版本不对，要求是10.13(17A405) , 17A405不知道是啥玩意，查了一下，发现10.13也有不同的版本https://zh.wikipedia.org/wiki/MacOS_High_Sierra，10.13 分17A365和 17A405 ，查看系统报告里发现我的版本是，于是来个小版本更新[macOS 10.13 补充更新](https://support.apple.com/kb/DL1937) ，本来想更新到10.13.3的，无奈更新文件太大，而且怕大版本更新，到时候出问题解决不了。
+  9. 下载[macOS 10.13 补充更新](https://support.apple.com/kb/DL1937)之后安装失败，报乱七八糟的错，懒得弄，搜索时突然发现[High Sierra升级到17A405后黑屏或无限重启的方法](http://bbs.pcbeta.com/viewthread-1763009-1-1.html)，其中有：
+    临时开启SIP
+    修改CsrActiveConfig 值为 0x00
+    安装NVIDIA Web 驱动，下载地址如下 ：
+    (17A365)378.10.10.10.15.114
+    (17A405)378.10.10.10.15.117
+    安装完成后，先不要重启，需要将第5步里面的CsrActiveConfig 值改回 0x03或0x67
+    并在Clover添加NV WEB的参数,重启，然后应该就可以驱动显卡并成功进入桌面了：在官网上没有搜到(17A365)的驱动，没想到在这里发现了[QUADRO & GEFORCE MACOS DRIVER RELEASE 378.10.10.10.15.114](https://www.nvidia.com/download/driverResults.aspx/125379/en-us)，
+  10. 按照网上的Nvidia GTX 1050显卡驱动的各种安装方式安装很多次很多次很多次很多次很多次................................，一直是无法启动，黑屏或重启，于是放弃Nvidia 官方显卡驱动，准备用默认的显卡驱动，默认的屏幕分辨率是1024的，1920的屏幕呈扁平状，于是查找发现可以设置"Graphics Mode"="1920x1080x32"，重启屏幕大小恢复正常，可是屏幕会有花屏和卡顿感，无法做开发使用，显存只有7M，也找不到可以改变显存的方法，于是便放弃这台电脑，想试试另外一台没有独显的Intel HD350的电脑
+  11. HD350的电脑以前装过，不过是第一次弄的，装不成功后放弃了，这次因为有经验，所以打算再试试，把安装盘安装上，安装的时候会报错，尝试用管理员安装，安装的时候尽量关闭硬盘操作，然后把Lilu.kext,WhateverGreen.kext加上，重启后便可进入安装界面进行安装，这次终于安装成功，安装成功后一定要把extra文件夹复制进来，重启后可进入设置界面了。
+  12. 正常登入之后，睡眠之后便一睡不醒，网上也没找到解决文案，因为是台式工作机，平时也不怎么睡眠，于是便把睡眠功能关闭，也没精力折腾这个睡眠的问题。
+  13. win和mac两台电脑，两套鼠标键盘，切换操作起来很不方便，于是想要用一套鼠标键盘操作两台电脑，找到微软的一个Mouse without Borders，不过它不能跨平台，又找到一个可以跨平台的synergy，安装之后可以随意切换电脑了，非常方便，完美！！！
+  14. 打算安装xcode却发现只支持10.13.6系统，坑爹了，于是在app store安装升级包，却安装不了，于是在官网下载升级包，https://zh.wikipedia.org/wiki/MacOS_High_Sierra，有两个包，普通包需要系统是10.13.5，另一个组合包需要系统10.13 , 安装之后重启却没有效果，还是原来的版本，突然在网上找到了一个10.14的版本，安装过程比较顺利，最后用到了最新版本的果子，真的很不错！
+
+
+
+  > --------[ 鲁大师 ]--------------------------------------------------------------------------------
+  > 软件:             鲁大师 5.15.18.1060
+  > 时间:             2018-11-07 19:42:59
+  > --------[ 概览 ]----------------------------------------------------------------------------------
+  > 电脑型号            微星 MS-7A74 台式电脑
+  > 操作系统            Windows 7 旗舰版 64位 SP1 ( DirectX 11 )
+  > 处理器              英特尔 Core i7-7700 @ 3.60GHz 四核
+  > 主板                微星 B250M PRO-VH (MS-7A74) ( 英特尔 Xeon E3 - 1200 v6/7th Gen Intel Core/DRAM Registers - 591F - 200 Series 芯片组 Family - A2C8 )
+  > 显卡                Nvidia GeForce GTX 1050 ( 2 GB / 微星 )
+  > 内存                16 GB ( 威刚 DDR4 2400MHz )
+  > 主硬盘              东芝 DT01ACA100 ( 1 TB / 7200 转/分 )
+  > 显示器              三星 SAM0D20 S24F350 ( 23.5 英寸  )
+  > 声卡                英特尔 High Definition Audio 控制器
+  > 网卡                瑞昱 RTL8168/8111/8112 Gigabit Ethernet Controller / 微星
+  > --------[ 主板 ]----------------------------------------------------------------------------------
+  > 主板型号            微星 B250M PRO-VH (MS-7A74)
+  > 芯片组              英特尔 Xeon E3 - 1200 v6/7th Gen Intel Core/DRAM Registers - 591F - 200 Series 芯片组 Family - A2C8
+  > 序列号              H616604379
+  > 主板版本            1.0
+  > BIOS版本            American Megatrends Inc. 1.40  /  BIOS程序发布日期: 2017年04月06日
+  > BIOS的大小          8192 KB
+  > BIOS的序列号        63-0100-000001-00101111-040416-Chipset
+  > --------[ 处理器 ]--------------------------------------------------------------------------------
+  > 处理器              英特尔 Core i7-7700 @ 3.60GHz 四核
+  > 速度                3.60 GHz (100 MHz x 36.0)
+  > 处理器数量          核心数: 4 / 线程数: 8
+  > 插槽/插座           U3E1
+  > 一级数据缓存        4 x 32 KB, 8-Way, 64 byte lines
+  > 一级代码缓存        4 x 32 KB, 8-Way, 64 byte lines
+  > 二级缓存            4 x 256 KB, 4-Way, 64 byte lines
+  > 三级缓存            8 MB, 16-Way, 64 byte lines
+  > 特征                MMX, SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2, HTT, EM64T, EIST, Turbo Boost
+  > --------[ 硬盘 ]----------------------------------------------------------------------------------
+  > 产品                东芝  DT01ACA100
+  > 大小                1 TB
+  > 转速                7200 转/分
+  > 缓存                32 MB
+  > 硬盘已使用          共 31 次，累计 9801 小时
+  > 固件                MS2OA750
+  > 接口                SATA III
+  > 数据传输率          600.00 MB/秒
+  > 特征                S.M.A.R.T,  APM,  48-bit LBA,  NCQ
+  > --------[ 内存 ]----------------------------------------------------------------------------------
+  > ChannelA-DIMM0      威刚 DDR4 2400MHz 8GB
+  > 制造日期            2017 年 06月
+  > 型号                7F7F7F7FCB
+  > 序列号              F9120000
+  > 厂商                AData
+  > 模块位宽:           64 Bits
+  > 模块电压:           SSTL 1.2V
+  > ChannelB-DIMM0      威刚 DDR4 2400MHz 8GB
+  > 制造日期            2017 年 05月
+  > 型号                7F7F7F7FCB
+  > 序列号              30010100
+  > 厂商                AData
+  > 模块位宽:           64 Bits
+  > 模块电压:           SSTL 1.2V
+  > --------[ 显卡 ]----------------------------------------------------------------------------------
+  > 主显卡              Nvidia GeForce GTX 1050
+  > 显存                2 GB
+  > 制造商              微星
+  > 制造商              Nvidia
+  > BIOS版本            Version86.7.39.40.c6
+  > BIOS日期            2017年07月06日 (非显卡制造日期)
+  > 驱动版本            22.21.13.8165
+  > 驱动日期            3-31-2017
+  > --------[ 显示器 ]--------------------------------------------------------------------------------
+  > 产品                三星 SAM0D20 S24F350
+  > 厂商                三星
+  > 固件程序日期        2016 年 07月 (非显示器制造日期)
+  > 屏幕尺寸            23.5 英寸 (52 厘米 x 29 厘米)
+  > 显示比例            宽屏 16 : 9
+  > 分辨率              1920 x 1080 32 位真彩色
+  > Gamma               2.20
+  > 电源管理            Active-Off
+  > --------[ 其他设备 ]------------------------------------------------------------------------------
+  > 网卡                Realtek 瑞昱 RTL8168/8111/8112 Gigabit Ethernet Controller
+  > 制造商              微星
+  > 声卡                英特尔 High Definition Audio 控制器
+  > 声卡                Nvidia High Definition Audio 控制器
+  > 键盘                PS/2 标准键盘
+  > 键盘                HID 标准键盘
+  > 鼠标                HID-compliant 鼠标
+  > 鼠标                微软 PS/2 鼠标
+  > --------[ PCI设备 ]-------------------------------------------------------------------------------
+  > 设备                Xeon E3 - 1200 v6/7th Gen Intel Core Host Bridge/DRAM Registers - 591F
+  > 设备ID              591F
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                Bridge / PCI to HOST
+  > 子系统制造商        MSI
+  > 子系统ID            7A741462
+  > 设备                Xeon E3 - 1200/1500 v5/6th Gen Intel Core PCIe Controller  - 1901
+  > 设备ID              1901
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                Bridge / PCI to PCI
+  > 子系统ID            00000000
+  > 设备                Xeon E3 - 1200/1500 v5/6th Gen Intel Core Gaussian Mixture Model - 1911
+  > 设备ID              1911
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                System / Other
+  > 子系统制造商        MSI
+  > 子系统ID            7A741462
+  > 设备                USB 3.0 可扩展主机控制器 - 1.0 (Microsoft)
+  > 设备ID              A2AF
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                Serial / USB (UHCI)
+  > 子系统制造商        MSI
+  > 子系统ID            7A741462
+  > 设备                200 Series Chipset Family Thermal subsystem - A2B1
+  > 设备ID              A2B1
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                Data Aquisition & Signal Processing / Other
+  > 子系统制造商        MSI
+  > 子系统ID            7A741462
+  > 设备                Management Engine Interface
+  > 设备ID              A2BA
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                Simple Communication / Other
+  > 子系统制造商        MSI
+  > 子系统ID            7A741462
+  > 设备                标准 SATA AHCI 控制器
+  > 设备ID              A282
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                Storage / Serial ATA (AHCI 1.0)
+  > 子系统制造商        MSI
+  > 子系统ID            7A741462
+  > 设备                200 Series Chipset Family PCI Express Root Port #7 - A296
+  > 设备ID              A296
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                Bridge / PCI to PCI
+  > 子系统ID            00000000
+  > 设备                200 Series Chipset Family LPC Controller  - A2C8
+  > 设备ID              A2C8
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                Bridge / PCI to ISA
+  > 子系统制造商        MSI
+  > 子系统ID            7A741462
+  > 设备                200 Series Chipset Family PMC - A2A1
+  > 设备ID              A2A1
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                Memory / Other
+  > 子系统制造商        MSI
+  > 子系统ID            7A741462
+  > 设备                High Definition Audio 控制器
+  > 设备ID              A2F0
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                Multimedia / Hi-definition Audio
+  > 子系统制造商        MSI
+  > 子系统ID            FA741462
+  > 设备                200 Series Chipset Family SMBUS - A2A3
+  > 设备ID              A2A3
+  > 制造商              Intel
+  > 制造商ID            8086
+  > 类别                Serial / SMBus Controller
+  > 子系统制造商        MSI
+  > 子系统ID            7A741462
+  > 设备                GeForce GTX 1050
+  > 设备ID              1C81
+  > 制造商              Nvidia
+  > 制造商ID            10DE
+  > 类别                Display / VGA
+  > 子系统制造商        MSI
+  > 子系统ID            8C971462
+  > 设备                High Definition Audio 控制器
+  > 设备ID              0FB9
+  > 制造商              Nvidia
+  > 制造商ID            10DE
+  > 类别                Multimedia / Hi-definition Audio
+  > 子系统制造商        MSI
+  > 子系统ID            8C971462
+  > 设备                RTL8168/8111/8112 Gigabit Ethernet Controller
+  > 设备ID              8168
+  > 制造商              Realtek
+  > 制造商ID            10EC
+  > 类别                Network / Ethernet
+  > 子系统制造商        MSI
+  > 子系统ID            7A741462
+  > --------[ USB设备 ]-------------------------------------------------------------------------------
+  > 制造商ID            1C4F
+  > 产品ID              0026
+  > 类别                0 / 0 / 0
+  > 设备                SIGMACHIP USB Keyboard
+  > Serial              ?
+  > 版本                USB 1.1
+  > 描述                Pixart Optical Mouse
+  > 制造商ID            093A
+  > 产品ID              2510
+  > 类别                0 / 0 / 0
+  > 设备                PixArt USB Optical Mouse
+  > Serial              ?
+  > 版本                USB 1.1
+  > --------[ 传感器 ]--------------------------------------------------------------------------------
+  > 名称                NUVOTON NCT5565D-M
+  > CPU温度             40℃
+  > CPU核心             40℃
+  > CPU封装             40℃
+  > 主板                44℃
+  > 显卡                37℃
+  > 硬盘温度            42℃
+  > 风扇                1142转
+
+</main>
+<iframe allowtransparency="true" frameborder="0" scrolling="0" src="https://github.com/william807803/william807803.github.io/issues/1" width="100%" height="1000px;"></iframe>
+
+<iframe allowtransparency="true" frameborder="0" scrolling="0" src="footer.html" width="100%" height="100px;"></iframe>
