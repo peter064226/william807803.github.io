@@ -1,9 +1,9 @@
-<iframe allowtransparency="true" frameborder="0" scrolling="0" src="header.html" width="100%" height=""></iframe>
+<iframe allowtransparency="true" frameborder="0" scrolling="0" src="header.html" width="100%" height="150px"></iframe>
 <link rel="stylesheet" href="common.css">
 <!--#include file="good.html" -->
 <main id="root" style="width:1200px;margin:auto;">
-  <section class="card" v-for="(ele,idx) in list" style="width: 680px;margin:20px 0px;">
-    <div class="title">
+  <section class="card" v-for="(ele,idx) in list" style="width: 680px;margin:20px 0px;    border-bottom: 1px solid #E2EAF1;">
+    <div class="title" style="border-left: 6px solid #49A7EA;padding-left: 9px;margin: 8px 0 18px;">
       <a :href="ele.title+'.html'" class="big" style="color: #0086E3;text-decoration:none;">{{ele.title.substr(11,100)}}</a>
       <div class="sub" style="line-height:26px;color: #879DAF;font-size:12px;">{{ele.title.substr(0,10)}}</div>
     </div>
@@ -16,19 +16,28 @@
       </div>
     </div>
     <div class="desc" style="margin: 22px 0;    line-height: 26px;
-    color: #888;
-    font-size: 14px;
-    height: 70px;
-    overflow: hidden;
-    display: inline-block;">
+      color: #888;
+      font-size: 14px;
+      height: 70px;
+      overflow: hidden;
+      display: inline-block;">
       {{ele.desc}}
     </div>
-    <div class="more">
-
+    <div class="more" style="display:flex;justify-content: flex-end;margin-bottom:20px;">
+      <a :href="ele.title+'.html'" style="    margin-left: 6px;
+        display: inline-block;font-size:13px;
+        border: 1px solid #a8c5dc;text-decoration:none;
+        padding: 5px 13px;
+        border-radius: 4px;
+        font-weight: 700;
+        color: #82adcd;" class="entry-readmore">
+        <i class="ipsicon ipsicon-read ipsicon-rspace"></i>
+        阅读全文
+      </a>
     </div>
    </section>
 </main>
-<iframe allowtransparency="true" frameborder="0" scrolling="0" src="footer.html" width="100%" height=""></iframe>
+<iframe allowtransparency="true" frameborder="0" scrolling="0" src="footer.html" width="100%" height="100px;"></iframe>
 <script src="vue.js"></script>
 <script src="trianglify.min.js"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script> -->
