@@ -37,16 +37,22 @@
         $html.find('.discussion-timeline,.container.new-discussion-timeline').css("width","1200px");
         $html.find('header.Header,.signup-prompt-bg,.discussion-timeline-actions,.position-relative.js-header-wrapper,.footer.container-lg.px-3,.pagehead.repohead,#partial-discussion-header,.discussion-sidebar').remove();
 
-        $('#comments').append($html)
-        $html.find('.container.new-discussion-timeline').append(`<div class="discussion-timeline-actions">
-                    <div class="flash flash-warn mt-3">
-        <a rel="nofollow" class="btn btn-primary" target="comment" href="https://github.com/william807803/william807803.github.io/issues/${params.commentId}">朕要去评论，爱卿不要拦朕！</a>
-        <strong>&nbsp; leave a comment</strong>.
-        dont be shy !
-        <a rel="nofollow" target="comment" href="https://github.com/william807803/william807803.github.io/issues/${params.commentId}">click to comment</a>
-          </div>
-            </div>`)
-       })
+        $('#comments').append($html);
+        $html.find('.container.new-discussion-timeline').append(`
+          <div class="discussion-timeline-actions" style="margin-bottom:20px;">
+            <div class="flash flash-warn mt-3">
+              <a rel="nofollow" class="btn btn-primary" target="comment" href="https://github.com/william807803/william807803.github.io/issues/${params.commentId}">朕要去评论，爱卿不要拦朕！跪好了！</a>
+                <strong>&nbsp; leave a comment</strong>.
+                dont be shy !
+              <a rel="nofollow" target="comment" href="https://github.com/william807803/william807803.github.io/issues/${params.commentId}">click to comment</a>
+            </div>
+          </div>`
+        );
+        setTimeout(e=>{
+          $('.footer.container-lg.px-3').remove();
+        },100)
+      });
+
 
        new Vue({
          el: '#root',
