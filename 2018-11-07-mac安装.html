@@ -248,14 +248,16 @@
 <!-- <div style="overflow:hidden;">
   <iframe style="margin-top: -380px;" allowtransparency="true" frameborder="0" scrolling="0" src="https://github.com/william807803/william807803.github.io/issues/1" hspace="-100" vspace="-100" width="100%" height="1000px;"></iframe>
 </div> -->
-<div id="comments"></div>
+<div id="comments">
+
+</div>
 <iframe allowtransparency="true" frameborder="0" scrolling="0" src="footer.html" width="100%" height="100px;"></iframe>
 <script src="zepto.min.js" charset="utf-8"></script>
 <script type="text/javascript">
   async function getHtml(url) {
     let response = await fetch(url);
     let html = await response.text();
-    return html
+    return html;
   }
   // getHtml('header.html').then(html=>{
   //   $('body').prepend(html)
@@ -264,7 +266,16 @@
     // document.getElementById("comments").innerHTML=html;
     let $html=$(html);
     $html.find('.discussion-timeline,.container.new-discussion-timeline').css("width","1200px");
-    $html.find('header.Header,.signup-prompt-bg,.position-relative.js-header-wrapper,.footer.container-lg.px-3,.pagehead.repohead,#partial-discussion-header,.discussion-sidebar').remove();
+    $html.find('header.Header,.signup-prompt-bg,.discussion-timeline-actions,.position-relative.js-header-wrapper,.footer.container-lg.px-3,.pagehead.repohead,#partial-discussion-header,.discussion-sidebar').remove();
+
     $('#comments').append($html)
+    $html.find('.container.new-discussion-timeline').append(`<div class="discussion-timeline-actions">
+                <div class="flash flash-warn mt-3">
+    <a rel="nofollow" class="btn btn-primary" target="comment" href="https://github.com/william807803/william807803.github.io/issues/4">朕要去评论，爱卿不要拦朕！</a>
+    <strong>&nbsp; leave a comment</strong>.
+    dont be shy !
+    <a rel="nofollow" target="comment" href="https://github.com/william807803/william807803.github.io/issues/4">click to comment</a>
+      </div>
+        </div>`)
    })
 </script>
