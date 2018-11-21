@@ -8,7 +8,7 @@
 
 1. 修改现有虚拟磁盘大小
 
-  ![](D:\DEV\ws\ws06\william807803.github.io\img\2018-11-21_104431.jpg)
+  ![](img/2018-11-21_104431.jpg)
 > VirtualBox修改现有虚拟磁盘大小 - CSDN博客  <https://blog.csdn.net/weiguang1017/article/details/52252448>
 
 ​	 1.1 转格式：目标文件最好和当前的一致，不一致如果移动vdi，加载vdi会报重复uuid错误；
@@ -25,7 +25,7 @@
 
 在boot2docker里面运行这个命令会有startchs endchs,而不是start end . 在google上也查不到为什么。
 
-![](D:\DEV\ws\ws06\william807803.github.io\img\2018-11-21_104432.jpg)
+![](img/2018-11-21_104432.jpg)
 
 所以没法像上面一样比较磁盘柱，不管就直接enter了
 
@@ -35,7 +35,7 @@ Resize existing machine · Issue #123 · machine-drivers/docker-machine-driver-x
 
 在网上找了一下说boot2docker 因为是极简的linux里面没有resize2fs, 也无法apt-get , 但有个tce-load
 
-![](D:\DEV\ws\ws06\william807803.github.io\img\2018-11-21_104433.jpg)
+![](img/2018-11-21_104433.jpg)
 
 可是tce-load又不能用root , 所有想到用docker-machine ssh登陆后使用tce-load;
 
@@ -43,12 +43,12 @@ Resize existing machine · Issue #123 · machine-drivers/docker-machine-driver-x
 
 > docker之docker-machine用法 - wadeson - 博客园 <https://www.cnblogs.com/jsonhc/p/7784466.html>
 
-![](D:\DEV\ws\ws06\william807803.github.io\img\2018-11-21_104434.jpg)
-![](D:\DEV\ws\ws06\william807803.github.io\img\2018-11-21_104435.jpg)
+![](img/2018-11-21_104434.jpg)
+![](img/2018-11-21_104435.jpg)
 3.1 tce-load -wi e2fsprogs.tcz (to download resize2fs)
 
 3.2 sudo resize2fs /dev/sda1
 
 3.3 Df -h
 
-![](D:\DEV\ws\ws06\william807803.github.io\img\2018-11-21_104436.jpg)
+![](img/2018-11-21_104436.jpg)
