@@ -8,43 +8,82 @@
     <iframe allowtransparency="true" frameborder="0" scrolling="0" src="header.html" width="100%" height="150px"></iframe>
     <link rel="stylesheet" href="common.css">
     <!--#include file="good.html" -->
-    <main id="root" style="width:1200px;margin:auto;">
-      <section class="card" v-for="(ele,idx) in list" style="width: 680px;margin:20px 0px;    border-bottom: 1px solid #E2EAF1;">
-        <div class="title" style="display:flex;justify-content: space-between;    align-items: center;border-left: 6px solid #8fc740;padding-left: 9px;margin: 8px 0 18px;">
-          <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` class="big" style="color: #26333b;text-decoration:none;font-weight: bold;" v-cloak>{{ele.title.substr(11)}}</a>
-          <div class="sub" style="line-height:26px;color: #879DAF;font-size:12px;" v-cloak>{{ele.title.substr(0,10)}}</div>
-        </div>
-        <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` class="img" style="width: 680px;height: 130px;display: block;position:relative;border-radius:0px;overflow:hidden;">
-          <div class="canvasbg" :id="'cardbg'+idx" style="position:absolute;"></div>
-          <div class="mesh" style="width:100%;height:100%;opacity:0.2;position:absolute;background: url(overlay.png) repeat right bottom;"></div>
-
-          <div class="front" style="width: 680px;height: 130px;position:absolute;display:flex;justify-content: center;align-items: center;">
-            <div style="font-size:25px;color:white;" v-cloak>{{ele.title.substr(11)}}</div>
+    <main id="root" style="width:1200px;margin:auto;display:flex;justify-content: space-around;">
+      <section style="width: 680px;min-height:1000px;">
+        <div class="card" v-for="(ele,idx) in list" style="width: 680px;margin:20px 0px;    border-bottom: 1px solid #E2EAF1;">
+          <div class="title" style="min-height:26px;display:flex;justify-content: space-between;    align-items: center;border-left: 6px solid #8fc740;padding-left: 9px;margin: 8px 0 18px;">
+            <div style="display:flex;flex-direction:column;">
+              <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` class="big" style="font-size:16px;text-decoration:none;margin-bottom:4px;" v-cloak>{{ele.title.substr(11)}}</a>
+              <span style="display: flex;font-size: 12px;color: rgb(135, 157, 175);">
+                <span v-if="ele.title.match(/mac/ig)" style="display:flex;align-items: center;margin-right:5px;">
+                  <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3871"><path d="M804.99749 544.146417C806.485912 698.993591 947.424043 750.523774 949.066439 751.242323 947.783317 754.78374 926.48349 824.688231 874.696682 896.902343 829.941384 959.313401 783.595014 1021.365186 710.457055 1022.648308 638.499568 1023.93143 615.454695 981.999 533.232231 981.999 451.061092 981.999 425.347326 1021.365186 357.341855 1023.93143 286.821464 1026.497674 233.032986 956.593183 187.918414 894.438748 95.636273 767.255687 25.218532 535.113238 119.861618 378.418368 166.823886 300.558519 250.842721 251.337956 341.94439 250.003509 411.284307 248.823036 476.774859 294.604832 519.066563 294.604832 561.512242 294.604832 641.014487 239.584557 724.622722 247.642564 759.574968 249.028336 857.862121 261.089683 920.940403 349.060534 915.910564 352.191352 803.663043 414.397111 804.99749 544.146417ZM510.597957 235.991815C502.488626 177.122174 532.872957 115.942912 567.568578 77.500574 606.318865 34.233697 671.706767 2.052995 725.700545 0 732.629404 59.947464 707.274912 120.151553 669.859072 163.521079 632.340582 206.736632 570.853371 240.45708 510.597957 235.991815Z" p-id="3872"></path></svg>
+                  &nbsp;Mac
+                </span>
+                <span v-if="ele.title.match(/linux|ubuntu/ig)" style="display:flex;align-items: center;margin-right:5px;">
+                  <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4690"><path d="M512 0c282.581333 0 512 229.418667 512 512s-229.418667 512-512 512S0 794.581333 0 512 229.418667 0 512 0z m139.904 754.346667a68.352 68.352 0 1 0 68.309333 118.4 68.352 68.352 0 0 0-68.309333-118.4z m-139.904-42.666667a199.04 199.04 0 0 1-84.096-18.56L380.416 778.24c39.68 19.584 84.394667 30.762667 131.584 30.762667a294.826667 294.826667 0 0 0 79.36-10.922667 95.573333 95.573333 0 0 1 46.72-67.712 95.744 95.744 0 0 1 81.92-6.656 295.765333 295.765333 0 0 0 88.32-192.64l-97.493333-1.408A199.637333 199.637333 0 0 1 512 711.68zM312.32 512a199.68 199.68 0 0 1 84.906667-163.413333L347.306667 264.917333a297.344 297.344 0 0 0-122.922667 172.16 94.72 94.72 0 0 1 35.413333 74.24c0 30.037333-13.824 56.277333-35.413333 74.197334a297.386667 297.386667 0 0 0 122.922667 172.117333l49.92-83.84A195.626667 195.626667 0 0 1 312.32 512z m-148.48-68.352a68.352 68.352 0 1 0 0 136.661333 68.352 68.352 0 0 0 0-136.661333zM512 312.32a199.637333 199.637333 0 0 1 198.826667 181.973333l97.493333-1.450666a296.490667 296.490667 0 0 0-88.32-192.682667A95.829333 95.829333 0 0 1 591.36 225.706667 303.957333 303.957333 0 0 0 512 215.04c-47.36 0-91.946667 11.093333-131.584 30.72l47.488 85.12A198.954667 198.954667 0 0 1 512 312.32z m139.904-42.709333a68.394667 68.394667 0 0 0 93.397333-24.96 68.437333 68.437333 0 0 0-118.485333-68.309334 68.266667 68.266667 0 0 0 25.088 93.269334z" fill="" p-id="4691"></path></svg>
+                  &nbsp;Linux
+                </span>
+                <span v-if="ele.title.match(/win/ig)" style="display:flex;align-items: center;margin-right:5px;">
+                  <svg t="1542857339171" class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3271"><path d="M426.285714 574.857143v372L36.571429 893.142857v-318.285714h389.714285z m0-424.571429v376.571429H36.571429V204z m561.142857 424.571429v449.142857l-518.285714-71.428571v-377.714286h518.285714z m0-501.714286v453.714286H469.142857V144.571429z" p-id="3272"></path></svg>
+                  &nbsp;Windows
+                </span>
+              </span>
+            </div>
+            <div class="sub" style="line-height:26px;color: #879DAF;font-size:12px;" v-cloak>{{ele.title.substr(0,10)}}</div>
           </div>
-        </a>
-        <div class="desc" style="margin: 22px 0;    line-height: 26px;
-          color: #888;
-          font-size: 14px;
-          height: 70px;
-          overflow: hidden;" v-cloak>
-          {{ele.desc}}
-        </div>
-        <div class="more" style="display:flex;justify-content: flex-end;margin-bottom:20px;">
-          <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` style="    margin-left: 6px;
-            display: inline-block;font-size:13px;
-            border: 1px solid #8fc740;text-decoration:none;
-            padding: 5px 13px;
-            border-radius: 4px;
-            font-weight: 700;
-            color: #8fc740;" class="entry-readmore">
-            <i class="ipsicon ipsicon-read ipsicon-rspace"></i>
-            阅读全文
+          <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` class="img" style="width: 680px;height: 130px;display: block;position:relative;border-radius:0px;overflow:hidden;">
+            <div class="canvasbg" :id="'cardbg'+idx" style="position:absolute;"></div>
+            <div class="mesh" style="width:100%;height:100%;opacity:0.2;position:absolute;background: url(overlay.png) repeat right bottom;"></div>
+
+            <div class="front" style="width: 680px;height: 130px;position:absolute;display:flex;justify-content: center;align-items: center;">
+              <div style="font-size:25px;color:white;" v-cloak>{{ele.title.substr(11)}}</div>
+            </div>
           </a>
+          <div class="desc" style="min-height:70px;margin: 22px 0;    line-height: 26px;
+            color: #888;
+            font-size: 14px;
+            overflow: hidden;" >
+            <span v-cloak>{{ele.desc}}</span>
+          </div>
+          <div class="more" style="display:flex;justify-content: space-between;margin-bottom:20px;">
+            <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` style="    margin-left: 6px;
+              display: inline-block;font-size:13px;
+              border: 1px solid #dfdfdf;text-decoration:none;
+              padding: 5px 13px;
+              border-radius: 4px;
+              font-weight: 700;
+              color: #b5b5b5;" class="entry-readmore">
+              <i class="ipsicon ipsicon-read ipsicon-rspace"></i>
+              分类名称
+            </a>
+            <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` style="    margin-left: 6px;
+              display: inline-block;font-size:13px;
+              border: 1px solid #8fc740;text-decoration:none;
+              padding: 5px 13px;
+              border-radius: 4px;
+              font-weight: 700;
+              color: #8fc740;" class="entry-readmore">
+              <i class="ipsicon ipsicon-read ipsicon-rspace"></i>
+              阅读全文
+            </a>
+          </div>
+         </div>
+
+      </section>
+      <section style="width:376px;min-height:200px;">
+        <div class="side" style="padding:10px;margin-top:10px;">
+          <div style="margin-bottom: 20px;border-left: 6px solid rgb(143, 199, 64);padding-left: 9px;display: flex;flex-direction: column;min-height: 26px;">
+            <span style="font-size:16px;margin-bottom:4px;">最近更新</span>
+            <span style="font-size: 12px;color: rgb(135, 157, 175);">lastest update</span>
+          </div>
+          <div v-for="(ele,idx) in list">
+            <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` v-cloak style="line-height:24px;font-size: 13px;opacity: 0.8;text-decoration:none;">{{ele.title}}</a>
+          </div>
         </div>
-       </section>
-      <div :class="[display?'topshow':'tophide']" style="transition: .5s all;margin-left: 1240px;cursor:pointer;position:fixed;z-index: 11111;opacity:1;color:gray;font-size:50px;" @click="display=false;toTop()">
+      </section>
+      <section :class="[display?'topshow':'tophide']" style="transition: .5s all;margin-left: 1240px;cursor:pointer;position:fixed;z-index: 11111;opacity:1;color:gray;font-size:50px;" @click="display=false;toTop()">
         <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15187"><path d="M520.355 781.165c45.898 0 83.6 37.703 83.603 83.603 0 45.898-37.703 143.433-83.602 143.433s-83.603-97.536-83.602-143.433c-0.001-45.898 37.295-83.194 83.6-83.603z" fill="#EFC75E" p-id="15188"></path><path d="M440.851 838.535l2.459 2.459c42.621 42.621 112.288 42.621 154.909 0l1.639-1.639c-10.655-33.605-42.21-57.783-79.913-57.783-36.471-0.411-68.028 23.767-79.094 56.962z" fill="#DEB957" p-id="15189"></path><path d="M512.158 531.995c140.154 0 253.671 85.65 253.671 218.429v63.11c0 132.778-113.517-72.534-253.671-72.534s-253.673 206.135-253.673 72.534v-63.11c0.003-132.778 113.52-218.427 253.673-218.429z" fill="#F26C4F" p-id="15190"></path><path d="M512.158 68.091c42.621 0 168.432 144.663 168.842 406.531-0.411 170.071-24.179 253.673-24.179 253.673-18.442 95.486-72.126 96.714-144.254 96.715s-126.22-0.82-144.254-96.715c0 0-23.77-84.422-24.179-254.493 0-261.457 124.994-406.121 168.022-405.71z" fill="#F4F0D3" p-id="15191"></path><path d="M660.919 687.316c-19.671 99.174-75.405 100.813-149.991 100.813-75.405 0-131.139-0.819-149.991-100.813l-3.687-15.982c5.737 37.703 11.065 56.964 11.065 56.964 18.033 95.895 72.126 96.714 144.254 96.715s125.403-1.639 144.254-96.715c0 0 11.063-39.753 18.442-120.074-6.967 52.867-14.346 79.097-14.346 79.097z" fill="#E8E4C8" p-id="15192"></path><path d="M512.158 342.666c40.162 0 72.534 32.375 72.534 72.534 0 40.162-32.375 72.534-72.534 72.534-40.162 0-72.534-32.375-72.534-72.534s32.785-72.948 72.534-72.534z" fill="#8BA0AB" p-id="15193"></path><path d="M520.767 588.141c20.491 0 37.291 56.143 37.291 156.14s-16.801 143.843-37.703 143.433c-20.491 0-37.703-43.44-37.703-143.433 0.411-100.403 16.801-156.14 38.112-156.14z" fill="#F26C4F" p-id="15194"></path><path d="M473.226 375.858c10.245-10.245 24.178-15.984 38.932-15.984s28.688 5.739 38.932 15.984 15.984 24.178 15.984 38.932c0 14.753-5.737 28.688-15.984 38.933s-24.178 15.982-38.932 15.982c-14.753 0-28.688-5.737-38.932-15.982s-15.982-24.178-15.982-38.933c-0.001-14.753 5.739-28.688 15.982-38.932M460.932 363.566c-13.113 13.113-21.311 31.146-20.901 51.225 0 40.162 32.375 72.534 72.534 72.534 19.671 0 38.112-7.786 51.225-20.901s21.311-31.146 20.901-51.225c0-40.162-32.375-72.534-72.534-72.534-20.080-0.411-38.112 7.786-51.225 20.901z" fill="#324D5B" p-id="15195"></path><path d="M397.002 203.737c31.147 23.767 74.995 38.113 123.351 38.113 42.21-0.411 80.733-11.065 110.649-29.507-40.163-94.256-93.847-143.843-118.847-144.255-24.179-0.411-75.403 46.718-115.156 135.649z" fill="#F26C4F" p-id="15196"></path></svg>
-      </div>
+      </section>
     </main>
 
     <iframe allowtransparency="true" frameborder="0" scrolling="0" src="footer.html" width="100%" height="100px;"></iframe>
