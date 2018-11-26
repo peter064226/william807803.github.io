@@ -10,7 +10,7 @@
     <!--#include file="good.html" -->
     <main id="root" style="width:1200px;margin:auto;display:flex;justify-content: space-around;">
       <section style="width: 680px;min-height:1000px;">
-        <div class="card" v-for="(ele,idx) in list" style="width: 680px;margin:20px 0px;    border-bottom: 1px solid #E2EAF1;">
+        <div class="card" v-for="(ele,idx) in list.reverse()" style="width: 680px;margin:20px 0px;    border-bottom: 1px solid #E2EAF1;">
           <div class="title" style="min-height:26px;display:flex;justify-content: space-between;    align-items: center;border-left: 6px solid #8fc740;padding-left: 9px;margin: 8px 0 18px;">
             <div style="display:flex;flex-direction:column;">
               <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` class="big" style="font-size:16px;text-decoration:none;margin-bottom:4px;" v-cloak>{{ele.title.substr(11)}}</a>
@@ -118,6 +118,10 @@
             {
               title:'2018-11-21-VirtualBox修改现有虚拟磁盘大小',
               desc:'有台闲置pc电脑，想着装个mac:计算机=>管理=>磁盘 右键压缩卷，新建一个分区10G，用于在硬盘上装安装盘（就不用U盘安装了），新建另一个分区，大概100或200G吧，用作系统盘。',
+            },
+            {
+              title:'2018-11-26-没有体验就没有发言权',
+              desc:'第一次使用滚筒式洗衣机，看起来比立柱式洗衣机高大上一些，可是没想到使用体验却很差，第一次洗衣服，中途想停下来再塞进几件衣服进去洗',
             },
           ],
         },
