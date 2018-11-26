@@ -10,7 +10,7 @@
     <!--#include file="good.html" -->
     <main id="root" style="width:1200px;margin:auto;display:flex;justify-content: space-around;">
       <section style="width: 680px;min-height:1000px;">
-        <div class="card" v-for="(ele,idx) in list.reverse()" style="width: 680px;margin:20px 0px;    border-bottom: 1px solid #E2EAF1;">
+        <div class="card" v-for="(ele,idx) in list" style="width: 680px;margin:20px 0px;    border-bottom: 1px solid #E2EAF1;">
           <div class="title" style="min-height:26px;display:flex;justify-content: space-between;    align-items: center;border-left: 6px solid #8fc740;padding-left: 9px;margin: 8px 0 18px;">
             <div style="display:flex;flex-direction:column;">
               <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` class="big" style="font-size:16px;text-decoration:none;margin-bottom:4px;" v-cloak>{{ele.title.substr(11)}}</a>
@@ -94,11 +94,7 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/0.4.0/trianglify.min.js"></script> -->
 
     <script type="text/javascript">
-      new Vue({
-        el: '#root',
-        data: {
-          display:false,
-          list:[
+      let list = [
             {
               title:'2018-09-11-安装ubuntu18并用windows7远程桌面控制',
               desc:'刚好有一个空闲电脑，想在上面装上ubuntu系统，为以后工作方便，可以从windows远程桌面控制，切换到ubuntu开发',
@@ -123,7 +119,12 @@
               title:'2018-11-26-没有体验就没有发言权',
               desc:'第一次使用滚筒式洗衣机，看起来比立柱式洗衣机高大上一些，可是没想到使用体验却很差，第一次洗衣服，中途想停下来再塞进几件衣服进去洗',
             },
-          ],
+          ];
+      new Vue({
+        el: '#root',
+        data: {
+          display:false,
+          list:list.reverse(),
         },
         methods: {
           getBG(idx){
