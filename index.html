@@ -13,7 +13,7 @@
         <div class="card" v-for="(ele,idx) in list" style="width: 680px;margin:20px 0px;    border-bottom: 1px solid #E2EAF1;">
           <div class="title" style="min-height:26px;display:flex;justify-content: space-between;    align-items: center;border-left: 6px solid #8fc740;padding-left: 9px;margin: 8px 0 18px;">
             <div style="display:flex;flex-direction:column;">
-              <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` class="big" style="font-size:16px;text-decoration:none;margin-bottom:4px;" v-cloak>{{ele.title.substr(11)}}</a>
+              <a :href=`blog.html?url=${ele.title}.html&commentId=${ele.commentId}` class="big" style="font-size:16px;text-decoration:none;margin-bottom:4px;" v-cloak>{{ele.title.substr(11)}}</a>
               <span style="display: flex;font-size: 12px;color: rgb(135, 157, 175);">
                 <span v-if="ele.title.match(/mac/ig)" style="display:flex;align-items: center;margin-right:5px;">
                   <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3871"><path d="M804.99749 544.146417C806.485912 698.993591 947.424043 750.523774 949.066439 751.242323 947.783317 754.78374 926.48349 824.688231 874.696682 896.902343 829.941384 959.313401 783.595014 1021.365186 710.457055 1022.648308 638.499568 1023.93143 615.454695 981.999 533.232231 981.999 451.061092 981.999 425.347326 1021.365186 357.341855 1023.93143 286.821464 1026.497674 233.032986 956.593183 187.918414 894.438748 95.636273 767.255687 25.218532 535.113238 119.861618 378.418368 166.823886 300.558519 250.842721 251.337956 341.94439 250.003509 411.284307 248.823036 476.774859 294.604832 519.066563 294.604832 561.512242 294.604832 641.014487 239.584557 724.622722 247.642564 759.574968 249.028336 857.862121 261.089683 920.940403 349.060534 915.910564 352.191352 803.663043 414.397111 804.99749 544.146417ZM510.597957 235.991815C502.488626 177.122174 532.872957 115.942912 567.568578 77.500574 606.318865 34.233697 671.706767 2.052995 725.700545 0 732.629404 59.947464 707.274912 120.151553 669.859072 163.521079 632.340582 206.736632 570.853371 240.45708 510.597957 235.991815Z" p-id="3872"></path></svg>
@@ -31,7 +31,7 @@
             </div>
             <div class="sub" style="line-height:26px;color: #879DAF;font-size:12px;" v-cloak>{{ele.title.substr(0,10)}}</div>
           </div>
-          <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` class="img" style="width: 680px;height: 130px;display: block;position:relative;border-radius:0px;overflow:hidden;">
+          <a :href=`blog.html?url=${ele.title}.html&commentId=${ele.commentId}` class="img" style="width: 680px;height: 130px;display: block;position:relative;border-radius:0px;overflow:hidden;">
             <div class="canvasbg" :id="'cardbg'+idx" style="position:absolute;"></div>
             <div class="mesh" style="width:100%;height:100%;opacity:0.2;position:absolute;background: url(overlay.png) repeat right bottom;"></div>
 
@@ -46,7 +46,7 @@
             <span v-cloak>{{ele.desc}}</span>
           </div>
           <div class="more" style="display:flex;justify-content: space-between;margin-bottom:20px;">
-            <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` style="    margin-left: 6px;
+            <a :href=`blog.html?url=${ele.title}.html&commentId=${ele.commentId}` style="    margin-left: 6px;
               display: inline-block;font-size:13px;
               border: 1px solid #dfdfdf;text-decoration:none;
               padding: 5px 13px;
@@ -56,7 +56,7 @@
               <i class="ipsicon ipsicon-read ipsicon-rspace"></i>
               分类名称
             </a>
-            <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` style="    margin-left: 6px;
+            <a :href=`blog.html?url=${ele.title}.html&commentId=${ele.commentId}` style="    margin-left: 6px;
               display: inline-block;font-size:13px;
               border: 1px solid #8fc740;text-decoration:none;
               padding: 5px 13px;
@@ -77,7 +77,7 @@
             <span style="font-size: 12px;color: rgb(135, 157, 175);">lastest update</span>
           </div>
           <div v-for="(ele,idx) in list">
-            <a :href=`blog.html?url=${ele.title}.html&commentId=${idx+1}` v-cloak style="line-height:24px;font-size: 13px;opacity: 0.8;text-decoration:none;">{{ele.title}}</a>
+            <a :href=`blog.html?url=${ele.title}.html&commentId=${ele.commentId}` v-cloak style="line-height:24px;font-size: 13px;opacity: 0.8;text-decoration:none;">{{ele.title}}</a>
           </div>
         </div>
       </section>
@@ -98,26 +98,37 @@
             {
               title:'2018-09-11-安装ubuntu18并用windows7远程桌面控制',
               desc:'刚好有一个空闲电脑，想在上面装上ubuntu系统，为以后工作方便，可以从windows远程桌面控制，切换到ubuntu开发',
+              commentId:1,
             },
             {
               title:'2018-09-18-F7的List组件图文示例',
               desc:'list组件在移动端是非常常用的组件，官方文档里的相当slot比较多，在使用的过程中常发现不知道使用哪些slot和自己的PSD比较匹配，现列出展示代码和效果图，以备不时之需：',
+              commentId:2,
             },
             {
               title:'2018-10-02-Promise研究',
               desc:'最近遇到一个xhr promise返回后执行相关操作的问题，因为对promise细节不太明了，所以作一些研究记录：',
+              commentId:3,
             },
             {
               title:'2018-11-07-mac安装',
               desc:'有台闲置pc电脑，想着装个mac:计算机=>管理=>磁盘 右键压缩卷，新建一个分区10G，用于在硬盘上装安装盘（就不用U盘安装了），新建另一个分区，大概100或200G吧，用作系统盘。',
+              commentId:4,
             },
             {
               title:'2018-11-21-VirtualBox修改现有虚拟磁盘大小',
               desc:'有台闲置pc电脑，想着装个mac:计算机=>管理=>磁盘 右键压缩卷，新建一个分区10G，用于在硬盘上装安装盘（就不用U盘安装了），新建另一个分区，大概100或200G吧，用作系统盘。',
+              commentId:5,
             },
             {
               title:'2018-11-26-没有体验就没有发言权',
               desc:'第一次使用滚筒式洗衣机，看起来比立柱式洗衣机高大上一些，可是没想到使用体验却很差，第一次洗衣服，中途想停下来再塞进几件衣服进去洗',
+              commentId:6,
+            },
+            {
+              title:'2018-11-27-Firebase初探',
+              desc:'Firebase 是 Google 的移动平台,可帮助您快速开发高品质的应用并推动业务增长。... Firebase 可以帮助您构建更出色的移动应用并推动业务增长。开始使用 play_circle_fil...',
+              commentId:7,
             },
           ];
       new Vue({
