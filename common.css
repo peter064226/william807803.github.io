@@ -7,7 +7,7 @@ pre{
 }
 /*card*/
 .card .img:hover{cursor: pointer;}
-.card .img {transition: .5s all;outline: 1px solid silver;outline-offset: -1px;} .card .img:hover {outline-offset: 10px;outline: 1px solid white;}
+.card .img {transition: .5s all;outline: 0px solid silver;outline-offset: -1px;} .card .img:hover {outline-offset: 10px;outline: 0px solid white;}
 .card .img .front{transition: .5s all;} .card .img:hover .front{transform: scale(2);}
  .card .img .mesh{transition: .5s all;} .card .img:hover .mesh{opacity:0 !important;}
  .card .img .canvasbg{transform: scale(2);transition: .5s all;} .card .img:hover .canvasbg{transform: scale(1);}
