@@ -1,0 +1,187 @@
+
+<div id="app" style="width:400px;">
+  <div class="" v-if="authUser">
+    <div class="" style="display:flex;align-items: center;">
+      <div>
+        <img :src="authUser.photoURL" height="50" alt="">
+      </div>
+      <div style="flex:1;">
+        <div style="display:flex;justify-content: space-between;">
+
+          <div> {{authUser.email}} </div>
+          <div>已登陆</div>
+        </div>
+        <div style="display:flex;justify-content: space-between;">
+          <div>你好 {{authUser.displayName || 'friend'}} 欢迎您来到 虾扯蛋聊天室</div>
+          <button type="button" name="button" @click="logout">退出</button>
+        </div>
+      </div>
+    </div>
+    <section >
+      <div>虾扯蛋聊天室</div>
+      <div ref="chatlist" class="chatlist" style="background:gray;padding:5px;height:600px;overflow-y: scroll;">
+        <div v-for="message in messages" :style="{
+          display:'flex',
+          'justify-content': nickname==message.nickname?'flex-end':'flex-start',
+
+        }">
+          <div style="    display: flex;    align-items: flex-end;margin-bottom:10px;">
+            <div v-if="nickname!=message.nickname" style="margin-right:5px;">
+              <img v-if="message.photo" :src="message.photo" height="50" alt="">
+              <div v-else style="width:50px;height:50px;background:#99cd49;border-radius:50%;
+                display:flex;align-items:center;justify-content:center;color:white;font-size:20px;    text-transform: uppercase;">
+                {{message.nickname.substr(0,1)}}
+              </div>
+            </div>
+            <div :style="{
+              background: nickname==message.nickname?'white':'#EFFDDE',
+              'border-radius': '5px',
+              padding: '10px',
+
+            }">
+              <div v-if="nickname!=message.nickname">{{message.nickname}}</div>
+              <div>{{message.text}}</div>
+              <div style="font-size:12px;color:silver;">{{message.time}}</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <form action="" @submit.prevent="storeMessage">
+        <div>
+          <textarea placeholder="Enter发送" @keyup.enter="storeMessage" v-model="messageText" name="" id="" cols="30" rows="10" style="width: 100%;height:50px;    padding: 10px;"></textarea>
+        </div>
+        <!-- <div>
+          <label for="">昵称</label>
+          <input type="text" v-model="nickname">
+        </div> -->
+        <!-- <button class="btn btn-primary"   type="submit" name="button">发送...</button> -->
+      </form>
+    </section>
+  </div>
+  <div v-else class="">
+
+    <form class="unminimized-comment editable-comment comment current-user previewable-edit js-comment js-task-list-container timeline-comment reorderable-task-lists "  method="post" @submit.prevent="register">
+      <div class="clearfix timeline-comment-header">
+        <h3 class="f5 text-normal timeline-comment-header-text">
+          注册
+        </h3>
+      </div>
+      <div class="comment-body">
+        <input class="form-control form-control subnav-search-input input-contrast" type="text" v-model="email" name="" value="" placeholder="账号">
+        <input class="form-control form-control subnav-search-input input-contrast" type="password" v-model="password" name="" value="" placeholder="密码">
+        <button class="btn "   type="button" name="button" @click="register">注册</button>
+      </div>
+    </form>
+    <form class="unminimized-comment editable-comment comment current-user previewable-edit js-comment js-task-list-container timeline-comment reorderable-task-lists "   method="post" @submit.prevent="register">
+      <div class="clearfix timeline-comment-header">
+        <h3 class="f5 text-normal timeline-comment-header-text">
+          登陆
+        </h3>
+      </div>
+      <div class="comment-body">
+        <input class="form-control form-control subnav-search-input input-contrast" type="text" v-model="email" name="" value="" placeholder="账号">
+        <input class="form-control form-control subnav-search-input input-contrast" type="password" v-model="password" name="" value="" placeholder="密码">
+        <button class="btn " type="button" name="button" @click="login">登陆</button>
+      </div>
+    </form>
+    <div class="">
+      <button class="btn"  type="button" name="button" @click="loginWithGithub">使用Github快捷登陆</button>
+      <button class="btn"  type="button" name="button" @click="loginWithGithub">使用Github快捷登陆</button>
+    </div>
+  </div>
+</div>
+
+<script src="firebase.5.5.9.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBU7btLIY06LtJonuBCJM1vG0NgE4PDWCo",
+    authDomain: "github-4bd82.firebaseapp.com",
+    databaseURL: "https://github-4bd82.firebaseio.com",
+    projectId: "github-4bd82",
+    storageBucket: "github-4bd82.appspot.com",
+    messagingSenderId: "481207879273"
+  };
+  firebase.initializeApp(config);
+  const auth = firebase.auth();
+  const database = firebase.database();
+</script>
+
+<link rel="stylesheet" href="https://unpkg.com/native-toast@2.0.0/dist/native-toast.css">
+<script src="https://unpkg.com/native-toast@2.0.0/dist/native-toast.min.js" charset="utf-8"></script>
+<script src="vue.js"></script>
+<script>
+  new Vue({
+    el:'#app',
+    data:{
+      email:'',
+      password:'',
+      authUser:null,
+      messages:[],
+      messageText:'',
+      // nickname:'',
+    },
+    computed:{
+      nickname(){
+        return this.authUser.displayName || this.authUser.email;
+      }
+    },
+    methods:{
+      alert(message){
+        nativeToast({
+          message,
+          position: 'north',
+          // Self destroy in 5 seconds
+          timeout: 5000,
+          // type: 'warning'
+        })
+      },
+      storeMessage(){
+        // this.messages.push({text:this.messageText,nickname:this.nickname});
+        let d = new Date();
+        database.ref('messages').push({
+          text:this.messageText,
+          nickname:this.nickname,
+          time: `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`,
+          photo:this.authUser.photoURL,
+        });
+        this.messageText='';
+      },
+      register(){
+        auth.createUserWithEmailAndPassword(this.email,this.password)
+        .catch(error=> this.alert(error.message));
+      },
+      login(){
+        auth.signInWithEmailAndPassword(this.email,this.password)
+        .catch(error=> this.alert(error.message));
+      },
+      loginWithGithub(){
+        const provider = new firebase.auth.GithubAuthProvider();
+        auth.signInWithPopup(provider)
+        .catch(error=> this.alert(error.message))
+        .then(data=>console.log(data.user,data.credential.accessToken))
+      },
+      logout(){
+        auth.signOut()
+      },
+      toTop(){
+        let that = this;
+        setTimeout(e=>{
+          that.$refs.chatlist.scrollTop=that.$refs.chatlist.scrollHeight;
+        },100);
+      },
+    },
+    created(){
+      auth.onAuthStateChanged(user=>{
+        this.authUser=user;
+      });
+      database.ref('messages').on('value',snapshot=>{
+         this.messages=snapshot.val();
+         this.toTop();
+      })
+    }
+  })
+
+
+</script>
