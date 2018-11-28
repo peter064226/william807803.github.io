@@ -175,11 +175,14 @@
     created(){
       auth.onAuthStateChanged(user=>{
         this.authUser=user;
+        if(user){
+          database.ref('messages').on('value',snapshot=>{
+             this.messages=snapshot.val();
+             this.toTop();
+          })
+        }
       });
-      database.ref('messages').on('value',snapshot=>{
-         this.messages=snapshot.val();
-         this.toTop();
-      })
+
     }
   })
 
