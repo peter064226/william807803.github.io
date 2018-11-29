@@ -25,21 +25,22 @@
       </div>
     </div>
     <section style="background:white;padding:5px;height:600px;overflow-y: scroll;">
-      <div style="display:flex;">
+      <div style="display:flex;flex-wrap: wrap;justify-content: space-around;">
         <div v-for="ele in users" style="display: flex;padding:5px;
-            flex-direction: column;
+            flex-direction: column;width: 120px;
             align-items: center;
             justify-content: center;">
-          <div style="margin:0px 5px;">
-            <img v-if="ele.photo" :src="ele.photo" height="50" alt="">
-            <div v-else style="width:50px;height:50px;background:#99cd49;
+          <div style="margin:0px 5px;position:relative;">
+            <img v-if="ele.photo" :src="ele.photo" height="120" alt="" style="background:#61a9e6;">
+            <div v-else style="width:120px;height:120px;background:#99cd49;
               display:flex;align-items:center;justify-content:center;color:white;font-size:20px;
               text-transform: uppercase;">
               {{ele.nickname.substr(0,1)}}
             </div>
+            <div style="position: absolute;top: 3px;left: 5px;color:white;width: 100px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{ele.nickname}}</div>
+            <div style="position: absolute;bottom: 3px;right: 5px;color:white;">{{ele.distance}}km</div>
           </div>
-          <div>{{ele.nickname}}</div>
-          <div>{{getFlatternDistance(user.latitude,user.longitude,ele.latitude,ele.longitude)}}</div>
+
         </div>
       </div>
     </section>
@@ -145,7 +146,10 @@
       },
       login(){
         auth.signInWithEmailAndPassword(this.email,this.password)
-        .then(res=> this.updatePosition())
+        .then(res=> {
+          this.addUserToDB();
+          this.updatePosition();
+        })
         .catch(error=> this.alert(error.message));
       },
       async addUserToDB(){
@@ -219,7 +223,7 @@
           }
         });
       },
-      getFlatternDistance(lat1,lng1,lat2,lng2){
+      getDistance(lat1,lng1,lat2,lng2){
         var radLat1 = lat1*Math.PI / 180.0;
         var radLat2 = lat2*Math.PI / 180.0;
         var a = radLat1 - radLat2;
@@ -239,10 +243,15 @@
              this.messages=snapshot.val();
              this.toTop();
           })
-          database.ref('users').on('value',snapshot=>{
-             this.users=snapshot.val();
-          })
           this.user = (await database.ref('/users/' + user.uid).once('value')).val();
+          database.ref('users').on('value',snapshot=>{
+            let users = Object.values(snapshot.val());
+            users.forEach(ele=>{
+              ele.distance=this.getDistance(this.user.latitude,this.user.longitude,ele.latitude,ele.longitude) || 0;
+            });
+            users.sort((a,b)=>a.distance-b.distance)
+            this.users=users;
+          })
         }
       });
 
