@@ -15,59 +15,33 @@
             <div> {{authUser.email}} </div>
           </div>
           <div style="display:flex;justify-content: space-between;">
-            <div>你好{{authUser.displayName}},欢迎您来到<span style="color:red;">虾扯蛋聊天室</span></div>
+            <div>你好{{authUser.displayName}},欢迎您来到<span style="color:red;">约炮神器</span></div>
           </div>
-          <div>你扯我的虾，我扯你的蛋，一切真和谐</div>
+          <div>叔叔，我们不约，我们只约阿姨！</div>
         </div>
         <div>
           <button class="btn btn-sm" type="button" name="button" @click="logout">退出</button>
         </div>
       </div>
     </div>
-    <section >
-      <!-- <div style="line-height:40px;    border-bottom: 1px solid #d1d5da;">虾扯蛋聊天室</div> -->
-      <div ref="chatlist" class="chatlist" style="background:gray;padding:5px;height:600px;overflow-y: scroll;">
-        <div v-for="message in messages" :style="{
-          display:'flex',
-          'justify-content': nickname==message.nickname?'flex-end':'flex-start',
-        }">
-          <div :style="{
-            display: 'flex',
-            'flex-direction': nickname==message.nickname?'row-reverse':'row',
-            'align-items': 'flex-end',
-            'margin-bottom':'10px',
-            }">
-            <div style="margin:0px 5px;">
-              <img v-if="message.photo" :src="message.photo" height="50" alt="">
-              <div v-else style="width:50px;height:50px;background:#99cd49;border-radius:50%;
-                display:flex;align-items:center;justify-content:center;color:white;font-size:20px;    text-transform: uppercase;">
-                {{message.nickname.substr(0,1)}}
-              </div>
-            </div>
-            <div :style="{
-              background: nickname==message.nickname?'white':'#EFFDDE',
-              'border-radius': '5px',
-              padding: '10px',
-
-            }">
-              <div style="font-size:12px;color:#99cd49;font-weight:bold;">{{message.nickname}}</div>
-              <div>{{message.text}}</div>
-              <div style="font-size:12px;color:silver;">{{message.time}}</div>
+    <section style="background:white;padding:5px;height:600px;overflow-y: scroll;">
+      <div style="display:flex;">
+        <div v-for="ele in users" style="display: flex;padding:5px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;">
+          <div style="margin:0px 5px;">
+            <img v-if="ele.photo" :src="ele.photo" height="50" alt="">
+            <div v-else style="width:50px;height:50px;background:#99cd49;
+              display:flex;align-items:center;justify-content:center;color:white;font-size:20px;
+              text-transform: uppercase;">
+              {{ele.nickname.substr(0,1)}}
             </div>
           </div>
-
+          <div>{{ele.nickname}}</div>
+          <div>{{getFlatternDistance(user.latitude,user.longitude,ele.latitude,ele.longitude)}}</div>
         </div>
       </div>
-      <form action="" @submit.prevent="storeMessage">
-        <div>
-          <textarea placeholder="Enter发送" @keyup.enter="storeMessage" v-model="messageText" name="" id="" cols="30" rows="10" style="width: 100%;height:50px;    padding: 10px;"></textarea>
-        </div>
-        <!-- <div>
-          <label for="">昵称</label>
-          <input type="text" v-model="nickname">
-        </div> -->
-        <!-- <button class="btn btn-primary"   type="submit" name="button">发送...</button> -->
-      </form>
     </section>
   </div>
   <div v-else class="">
@@ -131,6 +105,8 @@
       authUser:null,
       messages:[],
       messageText:'',
+      users:[],
+      user:{},
       // nickname:'',
     },
     computed:{
@@ -161,17 +137,44 @@
       },
       register(){
         auth.createUserWithEmailAndPassword(this.email,this.password)
+        .then(res=> {
+          this.addUserToDB();
+          this.updatePosition();
+        })
         .catch(error=> this.alert(error.message));
       },
       login(){
         auth.signInWithEmailAndPassword(this.email,this.password)
+        .then(res=> this.updatePosition())
         .catch(error=> this.alert(error.message));
+      },
+      async addUserToDB(){
+        let userId = auth.currentUser.uid;
+        let user = (await database.ref('/users/' + userId).once('value')).val();
+        !user && database.ref('users/' + userId).set({
+          username: auth.currentUser.email,
+          nickname: auth.currentUser.displayName || auth.currentUser.email,
+          email: auth.currentUser.email,
+          photo : auth.currentUser.photoURL,
+        });
+      },
+      async updatePosition(){
+        let userId = auth.currentUser.uid;
+        let position = await this.getCurrentPosition();
+        database.ref('users/' + userId).update({
+          latitude:position.coords.latitude,
+          longitude:position.coords.longitude,
+        });
       },
       loginWithGithub(){
         const provider = new firebase.auth.GithubAuthProvider();
         auth.signInWithPopup(provider)
         .catch(error=> this.alert(error.message))
-        .then(data=>console.log(data.user,data.credential.accessToken))
+        .then(data=>{
+          this.addUserToDB();
+          this.updatePosition();
+          console.log(data.user,data.credential.accessToken)
+        })
       },
       logout(){
         auth.signOut()
@@ -182,17 +185,68 @@
           that.$refs.chatlist.scrollTop=that.$refs.chatlist.scrollHeight;
         },100);
       },
+      getCurrentPosition(){
+        return new Promise(function(resolve, reject) {
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(position=>{
+                resolve(position);
+              }, error=>{
+                  reject(error);
+                  switch(error.code) {
+                    case error.TIMEOUT:
+                        this.alert("A timeout occured! Please try again!");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        this.alert('We can\'t detect your location. Sorry!');
+                        break;
+                    case error.PERMISSION_DENIED:
+                        this.alert('Please allow geolocation access for this to work.');
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        this.alert('An unknown error occured!');
+                        break;
+                }
+              },{
+                  // 指示浏览器获取高精度的位置，默认为false
+                  enableHighAcuracy: true,
+                  // 指定获取地理位置的超时时间，默认不限时，单位为毫秒
+                  timeout: 5000,
+                  // 最长有效期，在重复获取地理位置时，此参数指定多久再次获取位置。
+                  maximumAge: 3000
+              });
+          }else{
+              reject("Your browser does not support Geolocation!");
+          }
+        });
+      },
+      getFlatternDistance(lat1,lng1,lat2,lng2){
+        var radLat1 = lat1*Math.PI / 180.0;
+        var radLat2 = lat2*Math.PI / 180.0;
+        var a = radLat1 - radLat2;
+        var  b = lng1*Math.PI / 180.0 - lng2*Math.PI / 180.0;
+        var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
+        Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+        s = s *6378.137 ;// EARTH_RADIUS;
+        s = Math.round(s * 10000) / 10000;
+        return s;
+      }
     },
     created(){
-      auth.onAuthStateChanged(user=>{
+      auth.onAuthStateChanged(async user=>{
         this.authUser=user;
         if(user){
           database.ref('messages').on('value',snapshot=>{
              this.messages=snapshot.val();
              this.toTop();
           })
+          database.ref('users').on('value',snapshot=>{
+             this.users=snapshot.val();
+          })
+          this.user = (await database.ref('/users/' + user.uid).once('value')).val();
         }
       });
+
+
 
     }
   })
