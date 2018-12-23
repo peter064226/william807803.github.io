@@ -1,0 +1,25 @@
+<pre style="margin-bottom: 20;font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+    margin-top: 20;">
+    大家一定遇到过在使用Git时，不小心将一个很大的文件添加到库中，即使删除，记录中还是保存了这个文件。
+    以后不管是拷贝，还是push/pull都比较麻烦。今天在上传工程到github上，发现最大只能上传100MB大小文件，
+    在本地git库中有一个150MB文件，虽然已经删除，但还保存了记录。下面教大家如何从库中彻底删除无效大文件
+
+    git clone //192.168.0.105/gittest
+
+    git count-objects -v
+
+    java -jar D:\DEV\soft\bfg\bfg.jar --strip-blobs-bigger-than 128K --protect-blobs-from master,branch001,branch002,branch003
+
+    git reflog expire --expire=now --all && git gc --prune=now --aggressive
+
+    git count-objects -v
+
+    git push --force
+
+    --protect-blobs-from
+    执行一次后发现除了master，其他所有分支当前文件不完整，项目因为缺少文件跑不起来！
+
+    java -jar D:\DEV\soft\bfg\bfg.jar --strip-blobs-bigger-than 1M --protect-blobs-from
+    master, branch001 , branch002 , branch003
+
+</pre>
