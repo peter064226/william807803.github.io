@@ -1,0 +1,19 @@
+<pre style="margin-bottom: 20;font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;margin-top: 20;">
+手机上和osmo pocket上有很多视频，需要传到macbook上剪辑，由于macbook上只有两个typec接口，所以买了一个扩展坞，
+感觉扩展坞又要连各种各样的线，还是麻烦，所以先想试试蓝牙；
+1 蓝牙：先把安卓手机和macbook蓝牙都打开后配对成功，但是在安卓手机上选择视频后，发送到蓝牙macbook，传输失败，我以为是macbook不支持非苹果的，
+所以拿了个iphone试试，结果还是不行，于是上网查了一下，原来是蓝牙配对后，还需要打开系统设置里的bluetooth sharing,有点坑啊，蓝牙可以传输之后，
+又发现传输速度慢的一B，只有100左右kbps,网上查了下，说蓝牙就是这个速度，没有解决方案，我的视频文件动不动就是几百兆，无可奈何只得放弃
+2 wifi：其实有很多各个平台带客户端的文件同步或者传输或者分享工具，但是感觉app越来越多，下app也真是好麻烦，而且我的iphone还是16G的，所以想弄个hfs,
+这样有浏览器就可以上传下载了，找了几个，HTTP File Server | chfs  |  Caddy ，最后选择了最简单的chfs,因为我用的是iphone的个人热点，
+结果只有iphone可以访问macbook上的chfs,其它两个安卓无法访问，一查发现个人热点原来不具备路由功能，只能共享网络数据，手头上也没有无线路由，只好作罢，
+而且iphone上传照片，照片名称统一都是image.jpg，无法上传第二张照片，看官网貌似作者只是在pc端有作测试，手机端没有测试。
+3 cable: 最后只能用线了，用扩展坞的时候不知道哪里出问题，发现所以的外设都识别不了，于是在网上了找了用
+Press Shift-Control-Option and the power button at the same time. Do this for 10 seconds
+关电脑前或前电脑后都试试，反正也是折腾好久才好的，可以识别移动硬盘和minicard了，用usb连安卓之后，在安卓studio的connect devices可以发现真机，
+但是无法在电脑看到手机内存盘，也是折腾了好久，拨插，换双typec头，结果还是不行，查了一下发现：
+  由于苹果的iOS和谷歌的Android系统属于竞争关系，因此苹果的电脑系统Mac OS X并不支持MTP协议，
+  这就使得通过USB将Android设备连接到Mac电脑上无法识别，更别说读取里面的文件了。
+于是安装了一个androidfiletransfer.dmg
+
+</pre>
