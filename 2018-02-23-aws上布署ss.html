@@ -1,0 +1,19 @@
+<pre style="margin-bottom: 20;font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;margin-top: 20;">
+1 因为需要浏览外网，所以想在外自建服务器，这样比较稳定而且可控性好，于是在网上查找各种国外好用的vps,看到aws有12个月的免费ec2使用
+于是使用帐号登陆，开启了一个在区域在日本的实例，刚开始想不用keys，想用帐号密码登陆，于是跳过生成keys，结果连接实例时被告知因为没有keys，
+所以要用帐号密码登陆，但也不知道默认帐号密码是什么东东，网上找也找不到，想在实例上添加keys也找不到相应的办法，于是不跳过生成keys又重新开了一个实例，
+真是有点坑。
+
+2 生成好实例后，用terminal直接ssh登陆服务器后，安装docker:
+  http://www.runoob.com/docker/ubuntu-docker-install.html
+  wget -qO- https://get.docker.com/ | sh
+  runoob@runoob:~$ sudo service docker start
+  runoob@runoob:~$ docker run hello-world
+
+3 docker 装完需要安装ss，ss的官网无法登陆了，在github上下载了官网镜像，上面有详细说明：
+  docker run -e PASSWORD=9MLSpPmNt -p 8388:8388 -p 8388:8388/udp -d --restart always shadowsocks/shadowsocks-libev
+  上面命令参数什么的貌似不能改，改了之后会连不上，不知道是什么原因，日后有时间再研究
+  
+4 mac客户端安装之后，填上相关的server参数之后，就可以连接访问外网了，整个过程调了几个小时，需要耐心调节纠错，不是很容易。
+
+</pre>
