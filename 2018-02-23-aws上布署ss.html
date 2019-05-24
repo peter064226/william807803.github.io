@@ -9,6 +9,7 @@
   wget -qO- https://get.docker.com/ | sh
   runoob@runoob:~$ sudo service docker start
   runoob@runoob:~$ docker run hello-world
+  或者直接 apt install docker.io
 
 3 docker 装完需要安装ss，ss的官网无法登陆了，在github上下载了官网镜像，上面有详细说明：
   docker run -e PASSWORD=9MLSpPmNt -p 8388:8388 -p 8388:8388/udp -d --restart always shadowsocks/shadowsocks-libev
